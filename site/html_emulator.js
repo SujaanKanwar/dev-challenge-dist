@@ -37,7 +37,7 @@ module.exports = (function () {
                 td.innerHTML = data[key];
                 tr.appendChild(td);
             }
-            tr.appendChild(_createGraphTD(data));
+            tr.appendChild(_createGraphTD.call(this, data));
             return tr;
         }
 
@@ -56,9 +56,9 @@ module.exports = (function () {
 
         function render(dataList) {
             this.rowsContainer.innerHTML = '';
-            dataList.forEach((data) =>{
+            dataList.forEach((data) => {
                 _setMidPrice(data);
-                this.rowsContainer.appendChild(_createTableRow(data));
+                this.rowsContainer.appendChild(_createTableRow.call(this, data));
             })
         }
 
