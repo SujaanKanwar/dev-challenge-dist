@@ -50,7 +50,7 @@ module.exports = (function () {
         }
 
         function _setMidPrice(data) {
-            var midPrice = parseInt((data.bestBid + data.bestAsk) / 2, 10);
+            var midPrice = (data.bestBid + data.bestAsk) / 2;
             last30SecondStore.set(data.name, midPrice);
         }
 
