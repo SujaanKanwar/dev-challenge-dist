@@ -16,8 +16,6 @@ module.exports = (function () {
     var proto = (function () {
         var events = {};
         var PRICES_DATA_RECEIVED = 'data-receive';
-        var LOCAL_PRICE_STORAGE = 'local_price_storage';
-        var localStorage = window.localStorage;
         var data = {};
 
         function _emit(event, data) {
@@ -26,28 +24,6 @@ module.exports = (function () {
                     callback(data);
                 })
             }
-        }
-
-        function _throttle(func, timeout) {
-            var timeoutId = null;
-            return function () {
-                if (!timeoutId) {
-                    func.apply(this, arguments);
-                    timeoutId = setTimeout(function () {
-                        clearTimeout(timeoutId);
-                    }, timeout);
-                }
-            }
-        }
-
-        function _dataToLocalStorage(data) {
-            localStorage.setItem(LOCAL_PRICE_STORAGE, JSON.stringify(data));
-        }
-
-        function _saveData(priceData) {
-            data[priceData.name] = priceData;
-            var throttledSaveData = _throttle(_dataToLocalStorage, 5000);
-            throttledSaveData(data);
         }
 
         function on(event, callback) {
@@ -63,13 +39,8 @@ module.exports = (function () {
         }
 
         function init() {
-            data = JSON.parse(localStorage.getItem(LOCAL_PRICE_STORAGE)) || {};
-
             this.webSocket.subscribe('/fx/prices', function (event) {
-
-                _saveData(JSON.parse(event.body));
-
-                _emit(PRICES_DATA_RECEIVED, data);
+                _emit(PRICES_DATA_RECEIVED, JSON.parse(event.body));
             })
         }
 
