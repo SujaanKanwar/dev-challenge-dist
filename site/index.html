@@ -26,6 +26,36 @@
         </table>
     </div>
 </div>
+<h3>Description</h3>
+<ul>
+    <li>Data Emitter : Will emit the latest data received. Anyone listening to 'data-receive' event will get the latest data.</li>
+    <li>Table Module:  This will initialize and manage data emitter and html renderer.This will get the data from Data emitter and will parse it to html renderer.</li>
+    <li>HTML renderer: This will be initialized by table module. It will get data from table module and render results to UI.</li>
+</ul>
+
+<h3>Design To Consider</h3>
+<ul>
+    <li>All the dependencies of table module have been injected to it while initializing. </li>
+    <li>Observable design pattern is being used to emit the data received by data emitter.</li>
+</ul>
+
+<h3>Which libraries/frameworks ?</h3>
+<ul>
+    <li>Whole table is getting re-render, for even a single row change. <br/>
+        <strong>Solution</strong>: Library/framework which uses Virtual DOM to update the UI will be best suited as only diff should be updated in the UI.
+        <br/>
+        <strong>React</strong> will be a good choice, because it uses VDOM and it has good community support.</li>
+    <br/>
+
+    <li>Maintenance, could become issue when this application will grow. <br/>
+        <strong>Solution</strong>: Library/framework which store the state of the application, so that time traversal is possible while debugging.
+        Also a single source of truth for state will help in developing further.
+        <br/>
+        <strong>Redux/Flux</strong>, will be a good choice in this case, which is designed for managing application state.
+    </li>
+</ul>
+<h3>BY:</h3>
+<a href="mailto:sujansingh77@gmail.com" target="_top">sujansingh77@gmail.com</a>
 <script src="bundle.js"></script>
 </body>
 </html>
