@@ -1,9 +1,9 @@
 const assert = require('assert');
 const Stomp = require('./dummy-stomp');
 const Sparkline = require('./dummy-sparkline');
-const TableModule = require('../table_module');
-const DataHandler = require('../data_handler');
-const HTMLEmulator = require('../html_emulator');
+const TableModule = require('../fx_price_table_module');
+const DataHandler = require('../fx_service_data_emitter');
+const HTMLEmulator = require('../fs_price_table_html_renderer');
 
 window.localStorage = (function () {
     var store = {};

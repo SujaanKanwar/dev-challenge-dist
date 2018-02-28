@@ -13,9 +13,9 @@ require('./site/style.css');
 //     require('./es6/myEs6code')
 // here to load the myEs6code.js file, and it will be automatically transpiled.
 
-const TableModule = require('./site/table_module');
-const DataHandler = require('./site/data_handler');
-const HTMLHandler = require('./site/html_emulator');
+const TableModule = require('./site/fx_price_table_module');
+const DataHandler = require('./site/fx_service_data_emitter');
+const HTMLHandler = require('./site/fs_price_table_html_renderer');
 
 // Change this to get detailed logging from the stomp library
 global.DEBUG = false;
