@@ -1,5 +1,5 @@
-module.exports = (function () {
-    function DataHandler(Stomp) {
+class DataHandler {
+    constructor(Stomp) {
         const url = "ws://localhost:8011/stomp";
         const webSocket = Stomp.client(url);
         webSocket.debug = function (msg) {
@@ -8,49 +8,36 @@ module.exports = (function () {
             }
         };
         this.webSocket = webSocket;
-        this.webSocket.connect({}, this.init.bind(this), function (error) {
-            alert(error.headers.message)
-        })
+        this.webSocket.connect({}, this.init.bind(this), (error)=> alert(error.headers.message));
+
+        this._events = {};
+        this.PRICES_DATA_RECEIVED = 'data-receive';
     }
 
-    var proto = (function () {
-        var events = {};
-        var PRICES_DATA_RECEIVED = 'data-receive';
-        var data = {};
-
-        function _emit(event, data) {
-            if (events[event]) {
-                events[event].forEach(function (callback) {
-                    callback(data);
-                })
-            }
+    _emit(event, data) {
+        if (this._events[event]) {
+            this._events[event].forEach((callback)=> callback(data))
         }
+    }
 
-        function on(event, callback) {
-            if (events[event]) {
-                events[event].push(callback);
-            } else {
-                events[event] = [callback];
-            }
+    on(event, callback) {
+        if (this._events[event]) {
+            this._events[event].push(callback);
+        } else {
+            this._events[event] = [callback];
         }
+    }
 
-        function off(event) {
-            events[event] = [];
-        }
+    off(event) {
+        this._events[event] = [];
+    }
 
-        function init() {
-            this.webSocket.subscribe('/fx/prices', function (event) {
-                _emit(PRICES_DATA_RECEIVED, JSON.parse(event.body));
-            })
-        }
+    init() {
+        this.webSocket.subscribe('/fx/prices', (event)=> {
+            this._emit(this.PRICES_DATA_RECEIVED, JSON.parse(event.body));
+        })
+    }
+}
 
-        return {
-            on: on,
-            off: off,
-            init: init
-        }
-    })();
-    DataHandler.prototype = proto;
-    DataHandler.prototype.constructor = DataHandler;
-    return DataHandler
-})();
+
+module.exports = DataHandler;

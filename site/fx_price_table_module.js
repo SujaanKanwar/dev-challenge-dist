@@ -1,5 +1,5 @@
-module.exports = (function () {
-    function TableModule(config, DataHandler, HTMLEmulator, Sparkline, Stomp) {
+class TableModule {
+    constructor(config, DataHandler, HTMLEmulator, Sparkline, Stomp) {
         this._dataHandler = new DataHandler(Stomp);
 
         this._htmlEmulator = new HTMLEmulator(config.container, Sparkline);
@@ -9,22 +9,12 @@ module.exports = (function () {
         this.init();
     }
 
-    var proto = (function () {
-        function _dataReceived(data) {
-            this._htmlEmulator.render(data);
-        }
+    _dataReceived(data) {
+        this._htmlEmulator.render(data);
+    }
 
-        function init() {
-            this._dataHandler.on('data-receive', _dataReceived.bind(this))
-        }
-
-        return {
-            init: init
-        }
-    })();
-
-    TableModule.prototype = proto;
-    TableModule.prototype.constructor = TableModule;
-
-    return TableModule;
-})();
+    init() {
+        this._dataHandler.on('data-receive', this._dataReceived.bind(this))
+    }
+}
+module.exports = TableModule;
